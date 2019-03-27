@@ -23,19 +23,8 @@
 #          Atos Research & Innovation, Atos Spain S.A.
 #          e-mail: javier.carnero@atos.net
 #
-# up.sh
+# package-blueprint.sh
 
 
-set -e
-cd $1
-cp ../inputs/inputs-def.yaml ./
-cfy -v blueprints upload -b $1 blueprint.yaml
-rm inputs-def.yaml
-echo ''
-cfy deployments create -b $1 -i ../inputs/local-blueprint-inputs.yaml --skip-plugins-validation $1
-
-echo ''
-cfy executions start -d $1 install
-
-echo ''
-cfy executions start -d $1 run_jobs
+export COPYFILE_DISABLE=true
+tar czf $1.tar.gz $1

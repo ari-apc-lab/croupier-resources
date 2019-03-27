@@ -7,3 +7,4 @@ blueprint/feelpp/toolboxes_gen/build
 /**/*.tar
 /**/*.tar.gz
 /**/*.tgz
+/**/*.zip

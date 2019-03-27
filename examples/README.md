@@ -1,0 +1,43 @@
+# Croupier TOSCA blueprint examples.
+
+## General use
+
+Copy the file `inputs/local-blueprint-[*-]inputs-example.yaml` to `inputs/local-blueprint-[*-]inputs.yaml` and complete the file with your user name and password.
+
+Every blueprint example can be run/deleted through two scripts in the `blueprints` folder:
+
+- `up.sh [example_name]` upload the blueprint, creates the deployment, run the *install* workflow and finally run the application with the *run\_jobs* workflow.
+
+- `down.sh [example_name]`
+
+Besides there are two scripts at the repository root folder to help stop or cancel an execution.
+
+- `force-cancel.sh` If for some reason the execution is hanged, cancel with this command. It receives the execution id as parameter. Use `cfy executions list` to see all executions status and ids.
+
+- `stop-instance.sh` Stops a node-instance if necessary. It receives the node instance id as parameter. Use `cfy node-instances list` to see all node instances status and ids.
+
+## Blueprints description
+
+- **single-srun-job** Single job execution using srun command. Uses two dummy deployment scripts that create a file using `touch` command.
+
+- **single-sbatch-job** Single job execution using sbatch command. Uses two deployment scripts that create the sbatch script file in the HPC and removes it.
+
+- **single-singularity-job** Single job execution using a singularity container. Uses two deployment scripts that download the image from the first argument (path).
+
+- **sbatch-scale-job** Single job execution using sbatch command, scaled 4 times (4 instances in parallel are executed).
+
+- **single-sbatch-output** Single job execution using sbatch command, publishing the outputs in CKAN.
+
+- **single-sbatch-openstack** Two jobs execution using sbatch command and a virtual machine execution. First the blueprint defines the OpenStack objects (network, keypair and virtual machine) then it defines the two workload managers (Slurm and Bash), and finally the jobs. Using the *canary* version.
+
+- **four-jobs** Combination of previous examples of four jobs arranged sequentially, except two and three that are in parallel. Uses the deployment scripts of previous examples.
+
+- **four-singularity-jobs** Same as previous example but only using singularity jobs. Uses the deployment scripts of *single\_singularity\_job* example.
+
+- **pilot-example** Dummy example to show how to model a MADF and a pilot. To work properly, deployment scripts and command properties must be modified.
+
+- **opm-flow-logger** OPM Flow example with the application logger
+
+- **single-singularity-openstack** Example of a hybrid computation using an HPC and OpenStack
+
+- **single-singularity-eosc** Example of a hybrid computation using an HPC and EOSC-Hub

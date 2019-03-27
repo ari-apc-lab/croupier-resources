@@ -1,3 +1,29 @@
+########
+# Copyright (c) 2019 Atos Spain SA. All rights reserved.
+#
+# This file is part of Croupier.
+#
+# Croupier is free software: you can redistribute it and/or modify it
+# under the terms of the Apache License, Version 2.0 (the License) License.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT, IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
+# OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# See README file for full disclaimer information and LICENSE file for full
+# license information in the project root.
+#
+# @author: Javier Carnero
+#          Atos Research & Innovation, Atos Spain S.A.
+#          e-mail: javier.carnero@atos.net
+#
+# local-blueprint-inputs-example.yaml
+
+
 # Copy this file to local-blueprint-inputs.yaml and change at least the [CHANGE] tags.
 ################### HPC Infrastructre ##################
 primary_hpc:
@@ -81,9 +107,9 @@ primary_hpc:
 app_singuarity_image:
   default: true
   description: SRegistry example
-  file: &id018 mso4sc-sregistry-latest.simg
+  file: &id018 croupier-sregistry-latest.simg
   name: SRegistry example
-  uri: &id017 'shub://sregistry.srv.cesga.es/mso4sc/sregistry:latest'
+  uri: &id017 'shub://sregistry.srv.cesga.es/croupier/sregistry:latest'
 
 hpc_base_dir: *id019
 app_mpi_version: *id009
@@ -108,7 +134,7 @@ primary_cloud:
   name: SZE
   owner: 1
   definition:
-    openstack_config: &id003 
+    openstack_config: &id003
       auth_url: http://193.224.131.130/identity
       custom_configuration:
         neutron_client: {endpoint_url: 'http://193.224.131.130:9696'}
@@ -188,10 +214,10 @@ primary_cloud:
     - &id006
       cidr: 10.0.0.0/24
       default: true
-      description: Default network for MSO4SC
+      description: Default network for Croupier
       gateway: 10.0.0.1
       id: &id023 00da93b2-9192-45d0-b777-6359fe8246b7
-      name: mso4sc
+      name: croupier
       version: IPv4
     openstack_volumes: None
     wm_config: &id007
@@ -215,7 +241,7 @@ secondary_cloud:
   name: Cesga Cloud
   owner: 1
   definition:
-    eosc_config: &id033 
+    eosc_config: &id033
       id: im
       host: 'http://im.srv.cesga.es:8800'
       type: InfrastructureManager
@@ -237,8 +263,8 @@ secondary_cloud:
     - &id035
       credentials: &id032
         host: ''
-        user: &id059 'mso4sc'
-        password: &id060 'mso4sc'
+        user: &id059 'croupier'
+        password: &id060 'croupier'
         public_key: &id061 ***
         private_key: &id062 |
           -----BEGIN RSA PRIVATE KEY-----

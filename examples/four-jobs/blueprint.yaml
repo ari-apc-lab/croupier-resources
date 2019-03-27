@@ -1,17 +1,27 @@
 ########
-# Copyright (c) 2017-2018 MSO4SC - javier.carnero@atos.net
+# Copyright (c) 2019 Atos Spain SA. All rights reserved.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# This file is part of Croupier.
 #
-#        http://www.apache.org/licenses/LICENSE-2.0
+# Croupier is free software: you can redistribute it and/or modify it
+# under the terms of the Apache License, Version 2.0 (the License) License.
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT, IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
+# OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# See README file for full disclaimer information and LICENSE file for full
+# license information in the project root.
+#
+# @author: Javier Carnero
+#          Atos Research & Innovation, Atos Spain S.A.
+#          e-mail: javier.carnero@atos.net
+#
+# blueprint.yaml
 
 tosca_definitions_version: cloudify_dsl_1_3
 
@@ -24,7 +34,7 @@ imports:
 
 node_templates:
     hpc_wm:
-        type: hpc.nodes.WorkloadManager
+        type: croupier.nodes.WorkloadManager
         properties:
             config: { get_input: hpc_wm_config }
             credentials: { get_input: hpc_wm_credentials }
@@ -34,23 +44,23 @@ node_templates:
             monitor_period: 15
             skip_cleanup: true
             workdir_prefix: "four"
-    
+
     first_job:
-        type: hpc.nodes.Job
+        type: croupier.nodes.Job
         properties:
-            job_options: 
-                type: 'SRUN'
+            job_options:
+                type: "SRUN"
                 partition: { get_input: partition_name }
-                command: 'touch fourth_example_1.test'
+                command: "touch fourth_example_1.test"
                 nodes: 1
                 tasks: 1
                 tasks_per_node: 1
-                max_time: '00:01:00'
+                max_time: "00:01:00"
             deployment:
-                bootstrap: 'scripts/bootstrap_example.sh'
-                revert: 'scripts/revert_example.sh'
+                bootstrap: "scripts/bootstrap_example.sh"
+                revert: "scripts/revert_example.sh"
                 inputs:
-                    - 'first_job'
+                    - "first_job"
                     - { get_input: partition }
             skip_cleanup: True
         relationships:
@@ -58,58 +68,74 @@ node_templates:
               target: hpc_wm
 
     second_parallel_job:
-        type: hpc.nodes.SingularityJob
+        type: croupier.nodes.SingularityJob
         properties:
             job_options:
                 pre:
-                - { get_input: mpi_load_command }
-                - { get_input: singularity_load_command }
+                    - { get_input: mpi_load_command }
+                    - { get_input: singularity_load_command }
                 partition: { get_input: partition_name }
-                image: {concat: [{ get_input: singularity_image_storage },'/',{ get_input: singularity_image_filename }] }
+                image:
+                    {
+                        concat:
+                            [
+                                { get_input: singularity_image_storage },
+                                "/",
+                                { get_input: singularity_image_filename },
+                            ],
+                    }
                 volumes:
-                  - { get_input: scratch_voulume_mount_point }
-                command: 'touch fourth_example_2.test'
+                    - { get_input: scratch_voulume_mount_point }
+                command: "touch fourth_example_2.test"
                 nodes: 1
                 tasks: 1
                 tasks_per_node: 1
-                max_time: '00:01:00'
+                max_time: "00:01:00"
             deployment:
-                bootstrap: 'scripts/singularity_bootstrap_example.sh'
-                revert: 'scripts/singularity_revert_example.sh'
+                bootstrap: "scripts/singularity_bootstrap_example.sh"
+                revert: "scripts/singularity_revert_example.sh"
                 inputs:
-                - { get_input: singularity_image_storage }
-                - { get_input: singularity_image_filename }
-                - { get_input: singularity_image_uri }
+                    - { get_input: singularity_image_storage }
+                    - { get_input: singularity_image_filename }
+                    - { get_input: singularity_image_uri }
             skip_cleanup: True
         relationships:
             - type: job_managed_by_wm
               target: hpc_wm
             - type: job_depends_on
               target: first_job
-    
+
     third_parallel_job:
-        type: hpc.nodes.SingularityJob
+        type: croupier.nodes.SingularityJob
         properties:
             job_options:
                 pre:
-                - { get_input: mpi_load_command }
-                - { get_input: singularity_load_command }
+                    - { get_input: mpi_load_command }
+                    - { get_input: singularity_load_command }
                 partition: { get_input: partition_name }
-                image: {concat: [{ get_input: singularity_image_storage },'/',{ get_input: singularity_image_filename }] }
+                image:
+                    {
+                        concat:
+                            [
+                                { get_input: singularity_image_storage },
+                                "/",
+                                { get_input: singularity_image_filename },
+                            ],
+                    }
                 volumes:
-                  - { get_input: scratch_voulume_mount_point }
-                command: 'touch fourth_example_3.test'
+                    - { get_input: scratch_voulume_mount_point }
+                command: "touch fourth_example_3.test"
                 nodes: 1
                 tasks: 1
                 tasks_per_node: 1
-                max_time: '00:01:00'
+                max_time: "00:01:00"
             deployment:
-                bootstrap: 'scripts/singularity_bootstrap_example.sh'
-                revert: 'scripts/singularity_revert_example.sh'
+                bootstrap: "scripts/singularity_bootstrap_example.sh"
+                revert: "scripts/singularity_revert_example.sh"
                 inputs:
-                - { get_input: singularity_image_storage }
-                - { get_input: singularity_image_filename }
-                - { get_input: singularity_image_uri }
+                    - { get_input: singularity_image_storage }
+                    - { get_input: singularity_image_filename }
+                    - { get_input: singularity_image_uri }
             skip_cleanup: True
         relationships:
             - type: job_managed_by_wm
@@ -118,16 +144,16 @@ node_templates:
               target: first_job
 
     fourth_job:
-        type: hpc.nodes.Job
+        type: croupier.nodes.Job
         properties:
             job_options:
-                type: 'SBATCH'
+                type: "SBATCH"
                 command: "touch.script fourth_example_4.test"
             deployment:
-                bootstrap: 'scripts/bootstrap_sbatch_example.sh'
-                revert: 'scripts/revert_sbatch_example.sh'
+                bootstrap: "scripts/bootstrap_sbatch_example.sh"
+                revert: "scripts/revert_sbatch_example.sh"
                 inputs:
-                    - 'fourth_job'
+                    - "fourth_job"
                     - { get_input: partition_name }
             skip_cleanup: True
         relationships:

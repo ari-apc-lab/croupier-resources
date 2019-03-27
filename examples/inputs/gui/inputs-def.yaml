@@ -1,3 +1,28 @@
+########
+# Copyright (c) 2019 Atos Spain SA. All rights reserved.
+#
+# This file is part of Croupier.
+#
+# Croupier is free software: you can redistribute it and/or modify it
+# under the terms of the Apache License, Version 2.0 (the License) License.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT, IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
+# OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# See README file for full disclaimer information and LICENSE file for full
+# license information in the project root.
+#
+# @author: Javier Carnero
+#          Atos Research & Innovation, Atos Spain S.A.
+#          e-mail: javier.carnero@atos.net
+#
+# inputs-def.yaml
+
 inputs:
   ################### HPC Infrastructre ##################
   # It will be rendered as HPC select box
@@ -10,7 +35,7 @@ inputs:
         type: list
         choices:
           REPLACE: INFRA_CONFIG.hpc_list
-  
+
   hpc_base_dir:
     default:
       INPUT:
@@ -22,7 +47,7 @@ inputs:
         choices:
           REPLACE: primary_hpc.definition.persistent_volumes
 
-  # Each one will be rendered in MSO4SC accordingly (lists->select box)
+  # Each one will be rendered in Croupier accordingly (lists->select box)
   app_singuarity_image:
     default:
       INPUT:
@@ -32,12 +57,12 @@ inputs:
         order: 22
         type: list
         choices:
-        - name: SRegistry example
-          description: SRegistry example
-          uri: 'shub://sregistry.srv.cesga.es/mso4sc/sregistry:latest'
-          file: mso4sc-sregistry-latest.simg
-          default: true
-  
+          - name: SRegistry example
+            description: SRegistry example
+            uri: "shub://sregistry.srv.cesga.es/croupier/sregistry:latest"
+            file: croupier-sregistry-latest.simg
+            default: true
+
   app_mpi_version:
     default:
       INPUT:
@@ -48,7 +73,7 @@ inputs:
         type: list
         choices:
           REPLACE: primary_hpc.definition.mpi_versions
-  
+
   app_singularity_version:
     default:
       INPUT:
@@ -59,7 +84,7 @@ inputs:
         type: list
         choices:
           REPLACE: primary_hpc.definition.singularity_versions
-  
+
   app_singularity_storage:
     default:
       INPUT:
@@ -125,8 +150,8 @@ inputs:
         type: list
         choices:
           REPLACE: INFRA_CONFIG.openstack_list
-  
-  # each one will be rendered in MSO4SC accordingly (lists->select box)
+
+  # each one will be rendered in Croupier accordingly (lists->select box)
   openstack_image:
     default:
       INPUT:
@@ -137,7 +162,7 @@ inputs:
         order: 60
         choices:
           REPLACE: primary_cloud.definition.openstack_images
-  
+
   openstack_flavor:
     default:
       INPUT:
@@ -148,7 +173,7 @@ inputs:
         order: 61
         choices:
           REPLACE: primary_cloud.definition.openstack_flavors
-  
+
   openstack_network:
     default:
       INPUT:
@@ -159,7 +184,7 @@ inputs:
         order: 62
         choices:
           REPLACE: primary_cloud.definition.openstack_networks
-  
+
   # Won't be rendered, their value is a match with other inputs
   cloud_wm_config:
     default:
@@ -191,8 +216,8 @@ inputs:
         type: list
         choices:
           REPLACE: INFRA_CONFIG.eosc_list
-  
-  # each one will be rendered in MSO4SC accordingly (lists->select box)
+
+  # each one will be rendered in Croupier accordingly (lists->select box)
   eosc_image:
     default:
       INPUT:
@@ -203,7 +228,7 @@ inputs:
         order: 80
         choices:
           REPLACE: secondary_cloud.definition.eosc_images
-  
+
   eosc_flavor:
     default:
       INPUT:
@@ -214,7 +239,7 @@ inputs:
         order: 81
         choices:
           REPLACE: secondary_cloud.definition.eosc_flavors
-  
+
   eosc_network:
     default:
       INPUT:
@@ -225,7 +250,7 @@ inputs:
         order: 82
         choices:
           REPLACE: secondary_cloud.definition.eosc_networks
-  
+
   # Won't be rendered, their value is a match with other inputs
   secondary_cloud_wm_config:
     default:
@@ -273,7 +298,7 @@ inputs:
     default:
       REPLACE: eosc_network.config
 
-  ################### Data Publish ##################  
+  ################### Data Publish ##################
 
   # It will be rendered as a selection box of datasets
   ckan_input_resource:
@@ -285,7 +310,6 @@ inputs:
         order: 100
         storage:
           REPLACE: USER_CONFIG.storage_list.0
-  
 
   # It will be rendered as a selection box of datasets
   ckan_outputs_dataset:
@@ -302,7 +326,7 @@ inputs:
   input_url:
     default:
       REPLACE: ckan_input_resource.resource.url
-  
+
   #################### Instance info ####################
   instance_id:
     default:
@@ -315,12 +339,12 @@ inputs:
         name: Test file
         description: Only to test file input
         default: |
-                  Test file
+          Test file
         type: file
         advanced: true
         order: 110
         null: true
-  
+
   test_bool:
     default:
       INPUT:
@@ -353,7 +377,7 @@ inputs:
         advanced: true
         order: 110
         null: true
-        
+
   test_complex_input:
     default:
       first_tag:

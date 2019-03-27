@@ -1,3 +1,28 @@
+########
+# Copyright (c) 2019 Atos Spain SA. All rights reserved.
+#
+# This file is part of Croupier.
+#
+# Croupier is free software: you can redistribute it and/or modify it
+# under the terms of the Apache License, Version 2.0 (the License) License.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT, IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
+# OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# See README file for full disclaimer information and LICENSE file for full
+# license information in the project root.
+#
+# @author: Javier Carnero
+#          Atos Research & Innovation, Atos Spain S.A.
+#          e-mail: javier.carnero@atos.net
+#
+# ft2_definition.yaml
+
 credentials:
   host: "ft6.cesga.es"
   user:
@@ -35,71 +60,71 @@ wm_config:
   country_tz: "Europe/Madrid"
 
 partitions:
-- name: thinnodes
-  description: Exclusive partition
-  properties:
-    total_nodes: 8
-    cpus_per_node: 24
-    min_nodes: 1
-    max_nodes: 8
-    max_time: UNLIMITED
-    default_memory_per_cpu: 128M
-    max_memory_per_node: 512M
-    shared: false
-- name: thin-shared
-  description: Subset of nodes
-  default: true
-  properties:
-    total_nodes: 2
-    cpus_per_node: 24
-    min_nodes: 0
-    max_nodes: 2
-    max_time: UNLIMITED
-    default_memory_per_cpu: 128M
-    max_memory_per_node: 512M
-    shared: true
-- name: cola-corta
-  description: Full nodes for short jobs
-  properties:
-    total_nodes: 8
-    cpus_per_node: 24
-    min_nodes: 1
-    max_nodes: 8
-    max_time: UNLIMITED
-    default_memory_per_cpu: 128M
-    max_memory_per_node: 512M
-    shared: false
+  - name: thinnodes
+    description: Exclusive partition
+    properties:
+      total_nodes: 8
+      cpus_per_node: 24
+      min_nodes: 1
+      max_nodes: 8
+      max_time: UNLIMITED
+      default_memory_per_cpu: 128M
+      max_memory_per_node: 512M
+      shared: false
+  - name: thin-shared
+    description: Subset of nodes
+    default: true
+    properties:
+      total_nodes: 2
+      cpus_per_node: 24
+      min_nodes: 0
+      max_nodes: 2
+      max_time: UNLIMITED
+      default_memory_per_cpu: 128M
+      max_memory_per_node: 512M
+      shared: true
+  - name: cola-corta
+    description: Full nodes for short jobs
+    properties:
+      total_nodes: 8
+      cpus_per_node: 24
+      min_nodes: 1
+      max_nodes: 8
+      max_time: UNLIMITED
+      default_memory_per_cpu: 128M
+      max_memory_per_node: 512M
+      shared: false
 
 mpi_versions:
-- name: OpenMPI 1.10.2
-  description: Stable mpi version
-  default: true
-  library: OpenMPI
-  version: "1.10.2"
-  load_command: module load gcc/5.3.0 openmpi/1.10.2
+  - name: OpenMPI 1.10.2
+    description: Stable mpi version
+    default: true
+    library: OpenMPI
+    version: "1.10.2"
+    load_command: module load gcc/5.3.0 openmpi/1.10.2
 
 singularity_versions:
-- name: Singularity 2.4.2
-  description: Stable singularity version
-  default: true
-  version: "2.4.2"
-  load_command: module load singularity/2.4.2
+  - name: Singularity 2.4.2
+    description: Stable singularity version
+    default: true
+    version: "2.4.2"
+    load_command: module load singularity/2.4.2
 
 persistent_volumes:
-- name: HOME
-  path: $HOME
-  container_mount_point: /mnt
-  description: Regular user file storage
-  default: true
-- name: LUSTRE
-  path: $LUSTRE
-  container_mount_point: /mnt
-  description: Big user files storage
+  - name: HOME
+    path: $HOME
+    container_mount_point: /mnt
+    description: Regular user file storage
+    default: true
+  - name: LUSTRE
+    path: $LUSTRE
+    container_mount_point: /mnt
+    description: Big user files storage
 
 local_volumes:
-- name: TEMP
-  path: /tmp
-  container_mount_point: /tmp
+  - name: TEMP
+    path: /tmp
+    container_mount_point: /tmp
 
 scratch_volume:
   name: Scratch

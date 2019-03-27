@@ -1,5 +1,5 @@
 ########
-# Copyright (c) 2017-2018 MSO4SC - javier.carnero@atos.net
+# Copyright (c) 2017-2018 Croupier - javier.carnero@atos.net
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ imports:
 
 node_templates:
     hpc_wm:
-        type: hpc.nodes.WorkloadManager
+        type: croupier.nodes.WorkloadManager
         properties:
             config: { get_input: hpc_wm_config }
             credentials: { get_input: hpc_wm_credentials }
@@ -36,7 +36,7 @@ node_templates:
             workdir_prefix: "four_scale"
     
     first_job:
-        type: hpc.nodes.Job
+        type: croupier.nodes.Job
         properties:
             job_options:
                 type: 'SBATCH'
@@ -54,7 +54,7 @@ node_templates:
               target: hpc_wm
 
     second_parallel_job:
-        type: hpc.nodes.SingularityJob
+        type: croupier.nodes.SingularityJob
         properties:
             job_options:
                 pre:
@@ -85,7 +85,7 @@ node_templates:
               target: first_job
     
     third_parallel_job:
-        type: hpc.nodes.SingularityJob
+        type: croupier.nodes.SingularityJob
         properties:
             job_options:
                 pre:
@@ -116,7 +116,7 @@ node_templates:
               target: first_job
 
     fourth_job:
-        type: hpc.nodes.Job
+        type: croupier.nodes.Job
         properties:
             job_options:
                 type: 'SBATCH'

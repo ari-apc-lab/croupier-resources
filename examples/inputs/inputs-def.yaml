@@ -46,6 +46,8 @@ inputs:
     default: ''
   cloud_network:
     default: ''
+  cloud_external_network:
+    default: ''
 
   ################# Second Cloud Infrastructre #################
   # Won't be rendered, their value is a match with other inputs

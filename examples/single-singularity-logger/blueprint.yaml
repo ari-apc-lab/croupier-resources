@@ -1,17 +1,27 @@
 ########
-# Copyright (c) 2017 MSO4SC - javier.carnero@atos.net
+# Copyright (c) 2019 Atos Spain SA. All rights reserved.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# This file is part of Croupier.
 #
-#        http://www.apache.org/licenses/LICENSE-2.0
+# Croupier is free software: you can redistribute it and/or modify it
+# under the terms of the Apache License, Version 2.0 (the License) License.
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT ANY WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT, IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
+# OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# See README file for full disclaimer information and LICENSE file for full
+# license information in the project root.
+#
+# @author: Javier Carnero
+#          Atos Research & Innovation, Atos Spain S.A.
+#          e-mail: javier.carnero@atos.net
+#
+# blueprint.yaml
 
 tosca_definitions_version: cloudify_dsl_1_3
 
@@ -25,7 +35,7 @@ imports:
 
 node_templates:
     first_hpc:
-        type: hpc.nodes.WorkloadManager
+        type: croupier.nodes.WorkloadManager
         properties:
             config: { get_input: hpc_wm_config }
             credentials: { get_input: hpc_wm_credentials }
@@ -37,30 +47,28 @@ node_templates:
             workdir_prefix: "singularity_logger"
 
     logger:
-        type: hpc.nodes.SingularityJob
+        type: croupier.nodes.SingularityJob
         properties:
-            job_options: 
+            job_options:
                 pre:
-                - { get_input: mpi_load_command }
-                - { get_input: singularity_load_command }
-                - 'singularity run -B /mnt remotelogger-cli.simg -f logfilter.yaml -sh logging.mso4sc.eu -u mso4sc -p remotelogger -rk $CFY_EXECUTION_ID -q $CFY_JOB_NAME &'
+                    - { get_input: mpi_load_command }
+                    - { get_input: singularity_load_command }
+                    - "singularity run -B /mnt remotelogger-cli.simg -f logfilter.yaml -sh logging.croupier.eu -u croupier -p remotelogger -rk $CFY_EXECUTION_ID -q $CFY_JOB_NAME &"
                 partition: { get_input: partition_name }
-                image: 'remotelogger-cli.simg'
+                image: "remotelogger-cli.simg"
                 volumes:
-                  - { get_input: scratch_voulume_mount_point }
+                    - { get_input: scratch_voulume_mount_point }
                 command: "bash -c 'for i in `seq 1 100`; do echo Line-$i: $(hostname): $(date) >> job.log; sleep 1; done'"
                 post:
-                    - 'echo Logger job finished succesfully: $(hostname): $(date)'
+                    - "echo Logger job finished succesfully: $(hostname): $(date)"
                 nodes: 1
                 tasks: 1
                 tasks_per_node: 1
-                max_time: '00:03:00'
+                max_time: "00:03:00"
             deployment:
-                bootstrap: 'scripts/bootstrap.sh'
-                revert: 'scripts/revert.sh'
+                bootstrap: "scripts/bootstrap.sh"
+                revert: "scripts/revert.sh"
             skip_cleanup: True
         relationships:
             - type: job_managed_by_wm
               target: first_hpc
-
-

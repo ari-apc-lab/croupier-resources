@@ -23,19 +23,10 @@
 #          Atos Research & Innovation, Atos Spain S.A.
 #          e-mail: javier.carnero@atos.net
 #
-# up.sh
+# force-cancel.sh: execute as ./force-cancel.sh [HOST] [ADMIN PASSWORD] [EXEC-ID]
 
-
-set -e
-cd $1
-cp ../inputs/inputs-def.yaml ./
-cfy -v blueprints upload -b $1 blueprint.yaml
-rm inputs-def.yaml
+curl http://$1/executions/$3 -X PATCH \
+	--header "Tenant: default_tenant" \
+	-u admin:$2 \
+	-H "Content-Type: application/json" -d '{"status": "cancelled"}'
 echo ''
-cfy deployments create -b $1 -i ../inputs/local-blueprint-inputs.yaml --skip-plugins-validation $1
-
-echo ''
-cfy executions start -d $1 install
-
-echo ''
-cfy executions start -d $1 run_jobs
