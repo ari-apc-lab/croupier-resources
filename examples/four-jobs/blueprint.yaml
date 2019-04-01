@@ -61,7 +61,7 @@ node_templates:
                 revert: "scripts/revert_example.sh"
                 inputs:
                     - "first_job"
-                    - { get_input: partition }
+                    - { get_input: partition_name }
             skip_cleanup: True
         relationships:
             - type: job_managed_by_wm
