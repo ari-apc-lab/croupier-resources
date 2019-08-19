@@ -36,4 +36,5 @@ The open source software and source code are provide to you on an “AS IS” ba
 
 Atos Spain SA shall not be liable to make any corrections to the open source software or source code, or to provide any support or assistance with respect to it without any previously specify agreement.
 
-Atos Spain SA disclaims any and all liability arising out of or in connection with the use of this software and/or source code
+Atos Spain SA disclaims any and all liability arising out of or in connection
+with the use of this software and/or source code

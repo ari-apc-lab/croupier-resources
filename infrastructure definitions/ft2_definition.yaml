@@ -56,7 +56,7 @@ credentials:
       order: 4
       secret: true
 
-wm_config:
+interface_config:
   country_tz: "Europe/Madrid"
 
 partitions:

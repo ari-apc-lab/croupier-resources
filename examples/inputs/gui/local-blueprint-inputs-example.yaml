@@ -100,9 +100,9 @@ primary_hpc:
       load_command: &id016 module load singularity/2.4.2
       name: Singularity 2.4.2
       version: 2.4.2
-    wm_config: &id013
+    interface_config: &id013
       country_tz: Europe/Madrid
-      workload_manager: SLURM
+      infrastructure_interface: SLURM
 
 app_singuarity_image:
   default: true
@@ -117,8 +117,8 @@ app_singularity_version: *id012
 app_singularity_storage: *id011
 partition: *id010
 
-hpc_wm_config: *id013
-hpc_wm_credentials: *id008
+hpc_interface_config: *id013
+hpc_interface_credentials: *id008
 mpi_load_command: *id015
 singularity_load_command: *id016
 singularity_image_uri: *id017
@@ -220,15 +220,15 @@ primary_cloud:
       name: croupier
       version: IPv4
     openstack_volumes: None
-    wm_config: &id007
-      workload_manager: BASH
+    interface_config: &id007
+      infrastructure_interface: BASH
 
 openstack_image: *id005
 openstack_flavor: *id004
 openstack_network: *id006
 
-cloud_wm_config: *id007
-cloud_wm_credentials: *id002
+cloud_interface_config: *id007
+cloud_interface_credentials: *id002
 openstack_config: *id003
 cloud_image: *id022
 cloud_flavor: *id021
@@ -289,15 +289,15 @@ secondary_cloud:
       config: &id054
         outbound: True
     eosc_volumes: None
-    wm_config: &id037
-      workload_manager: BASH
+    interface_config: &id037
+      infrastructure_interface: BASH
 
 eosc_image: *id035
 eosc_flavor: *id034
 eosc_network: *id036
 
-secondary_cloud_wm_config: *id037
-secondary_cloud_wm_credentials: *id032
+secondary_cloud_interface_config: *id037
+secondary_cloud_interface_credentials: *id032
 eosc_config: *id033
 secondary_cloud_image_name: *id055
 secondary_cloud_image_id: *id052

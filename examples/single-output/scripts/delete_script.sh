@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -l
 
 ########
 # Copyright (c) 2019 Atos Spain SA. All rights reserved.
@@ -23,9 +23,11 @@
 #          Atos Research & Innovation, Atos Spain S.A.
 #          e-mail: javier.carnero@atos.net
 #
-# revert_example.sh
+# revert_sbatch_example.sh
 
 
-if [ -f deploy_$1.test ]; then
-    rm deploy_$1.test
+FILE="touch.script"
+
+if [ -f $FILE ]; then
+    rm $FILE
 fi

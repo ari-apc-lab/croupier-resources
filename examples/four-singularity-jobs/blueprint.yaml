@@ -23,95 +23,110 @@ imports:
     - inputs-def.yaml
 
 node_templates:
-    hpc_wm:
-        type: croupier.nodes.WorkloadManager
+    hpc_interface:
+        type: croupier.nodes.InfrastructureInterface
         properties:
-            config: { get_input: hpc_wm_config }
-            credentials: { get_input: hpc_wm_credentials }
+            config: { get_input: hpc_interface_config }
+            credentials: { get_input: hpc_interface_credentials }
             external_monitor_entrypoint: { get_input: monitor_entrypoint }
             job_prefix: { get_input: job_prefix }
             base_dir: { get_input: "hpc_base_dir" }
             monitor_period: 15
             skip_cleanup: true
-            workdir_prefix: "four_scale"
-    
+            workdir_prefix: "four_singularity"
+
     first_job:
         type: croupier.nodes.Job
         properties:
             job_options:
-                type: 'SBATCH'
-                command: "touch.script fourth_example_1.test"
-                scale: 4
-            deployment:
-                bootstrap: 'scripts/bootstrap_sbatch_example.sh'
-                revert: 'scripts/revert_sbatch_example.sh'
-                inputs:
-                    - 'first_job'
-                    - { get_input: partition_name }
+                partition: { get_input: partition_name }
+                commands: ["touch fourth_example_1.test"]
+                nodes: 1
+                tasks: 1
+                tasks_per_node: 1
+                max_time: "00:01:00"
             skip_cleanup: True
         relationships:
-            - type: job_managed_by_wm
-              target: hpc_wm
+            - type: job_managed_by_interface
+              target: hpc_interface
 
     second_parallel_job:
         type: croupier.nodes.SingularityJob
         properties:
             job_options:
                 pre:
-                - { get_input: mpi_load_command }
-                - { get_input: singularity_load_command }
+                    - { get_input: mpi_load_command }
+                    - { get_input: singularity_load_command }
                 partition: { get_input: partition_name }
-                image: {concat: [{ get_input: singularity_image_storage },'/',{ get_input: singularity_image_filename }] }
+                image:
+                    {
+                        concat:
+                            [
+                                { get_input: singularity_image_storage },
+                                "/",
+                                { get_input: singularity_image_filename },
+                            ],
+                    }
                 volumes:
-                  - { get_input: scratch_voulume_mount_point }
-                command: 'touch fourth_example_2.test'
+                    - { get_input: scratch_voulume_mount_point }
+                    - { get_input: singularity_mount_point }
+                commands: ["touch fourth_example_2.test"]
                 nodes: 1
                 tasks: 1
                 tasks_per_node: 1
-                max_time: '00:01:00'
-                scale: 2
+                max_time: "00:01:00"
             deployment:
-                bootstrap: 'scripts/singularity_bootstrap_example.sh'
-                revert: 'scripts/singularity_revert_example.sh'
+                bootstrap: "scripts/singularity_bootstrap_example.sh"
+                revert: "scripts/singularity_revert_example.sh"
                 inputs:
-                - { get_input: singularity_image_storage }
-                - { get_input: singularity_image_filename }
-                - { get_input: singularity_image_uri }
+                    - { get_input: singularity_image_storage }
+                    - { get_input: singularity_image_filename }
+                    - { get_input: singularity_image_uri }
+                    - { get_input: singularity_load_command }
             skip_cleanup: True
         relationships:
-            - type: job_managed_by_wm
-              target: hpc_wm
+            - type: job_managed_by_interface
+              target: hpc_interface
             - type: job_depends_on
               target: first_job
-    
+
     third_parallel_job:
         type: croupier.nodes.SingularityJob
         properties:
             job_options:
                 pre:
-                - { get_input: mpi_load_command }
-                - { get_input: singularity_load_command }
+                    - { get_input: mpi_load_command }
+                    - { get_input: singularity_load_command }
                 partition: { get_input: partition_name }
-                image: {concat: [{ get_input: singularity_image_storage },'/',{ get_input: singularity_image_filename }] }
+                image:
+                    {
+                        concat:
+                            [
+                                { get_input: singularity_image_storage },
+                                "/",
+                                { get_input: singularity_image_filename },
+                            ],
+                    }
                 volumes:
-                  - { get_input: scratch_voulume_mount_point }
-                command: 'touch fourth_example_3.test'
+                    - { get_input: scratch_voulume_mount_point }
+                    - { get_input: singularity_mount_point }
+                commands: ["touch fourth_example_3.test"]
                 nodes: 1
                 tasks: 1
                 tasks_per_node: 1
-                max_time: '00:01:00'
-                scale: 2
+                max_time: "00:01:00"
             deployment:
-                bootstrap: 'scripts/singularity_bootstrap_example.sh'
-                revert: 'scripts/singularity_revert_example.sh'
+                bootstrap: "scripts/singularity_bootstrap_example.sh"
+                revert: "scripts/singularity_revert_example.sh"
                 inputs:
-                - { get_input: singularity_image_storage }
-                - { get_input: singularity_image_filename }
-                - { get_input: singularity_image_uri }
+                    - { get_input: singularity_image_storage }
+                    - { get_input: singularity_image_filename }
+                    - { get_input: singularity_image_uri }
+                    - { get_input: singularity_load_command }
             skip_cleanup: True
         relationships:
-            - type: job_managed_by_wm
-              target: hpc_wm
+            - type: job_managed_by_interface
+              target: hpc_interface
             - type: job_depends_on
               target: first_job
 
@@ -119,19 +134,22 @@ node_templates:
         type: croupier.nodes.Job
         properties:
             job_options:
-                type: 'SBATCH'
-                command: "touch.script fourth_example_4.test"
-                scale: 4
+                script: "touch.script"
+                arguments:
+                    - "fourth_example_4.test"
+                nodes: 1
+                tasks: 1
+                tasks_per_node: 1
+                max_time: "00:01:00"
             deployment:
-                bootstrap: 'scripts/bootstrap_sbatch_example.sh'
-                revert: 'scripts/revert_sbatch_example.sh'
+                bootstrap: "scripts/create_script.sh"
+                revert: "scripts/delete_script.sh"
                 inputs:
-                    - 'fourth_job'
-                    - { get_input: partition_name }
+                    - "script_"
             skip_cleanup: True
         relationships:
-            - type: job_managed_by_wm
-              target: hpc_wm
+            - type: job_managed_by_interface
+              target: hpc_interface
             - type: job_depends_on
               target: second_parallel_job
             - type: job_depends_on

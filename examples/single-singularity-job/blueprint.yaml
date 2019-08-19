@@ -33,17 +33,16 @@ imports:
     - inputs-def.yaml
 
 node_templates:
-    hpc_wm:
-        type: croupier.nodes.WorkloadManager
+    hpc_interface:
+        type: croupier.nodes.InfrastructureInterface
         properties:
-            config: { get_input: hpc_wm_config }
-            credentials: { get_input: hpc_wm_credentials }
+            config: { get_input: hpc_interface_config }
+            credentials: { get_input: hpc_interface_credentials }
             external_monitor_entrypoint: { get_input: monitor_entrypoint }
             job_prefix: { get_input: job_prefix }
             base_dir: { get_input: "hpc_base_dir" }
             monitor_period: 15
             skip_cleanup: true
-            simulate: True # COMMENT to test against a real HPC
             workdir_prefix: "single_singularity"
 
     single_job:
@@ -66,7 +65,7 @@ node_templates:
                 volumes:
                     - { get_input: scratch_voulume_mount_point }
                     - { get_input: singularity_mount_point }
-                command: "touch single_singularity.test"
+                commands: ["touch singularity.test"]
                 nodes: 1
                 tasks: 1
                 tasks_per_node: 1
@@ -78,10 +77,11 @@ node_templates:
                     - { get_input: singularity_image_storage }
                     - { get_input: singularity_image_filename }
                     - { get_input: singularity_image_uri }
+                    - { get_input: singularity_load_command }
             skip_cleanup: True
         relationships:
-            - type: job_managed_by_wm
-              target: hpc_wm
+            - type: job_managed_by_interface
+              target: hpc_interface
 
 outputs:
     single_job_name:

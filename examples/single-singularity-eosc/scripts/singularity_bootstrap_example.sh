@@ -25,10 +25,9 @@
 #
 # singularity_bootstrap_example.sh
 
-
-module load singularity/2.4.2
+$4 # load singularity
 
 if [ ! -f $1/$2 ]; then
     cd $1
-    singularity pull $3
+    singularity pull $2 $3
 fi

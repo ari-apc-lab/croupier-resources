@@ -1,0 +1,27 @@
+version: "3"
+services:
+  manager:
+    container_name: cfy_manager
+    restart: always
+    image: cloudifyplatform/community-cloudify-manager-aio
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /run/lock
+    network_mode: "host"
+  vpn:
+    container_name: vpn
+    restart: always
+    build: .
+    devices:
+      - /dev/ppp
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - $FORTINET_CONFIG:/etc/openfortivpn/config:ro
+    network_mode: "host"

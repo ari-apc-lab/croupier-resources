@@ -108,10 +108,10 @@ inputs:
           REPLACE: primary_hpc.definition.partitions
 
   # Won't be rendered, their value is a match with other inputs
-  hpc_wm_config:
+  hpc_interface_config:
     default:
-      REPLACE: primary_hpc.definition.wm_config
-  hpc_wm_credentials:
+      REPLACE: primary_hpc.definition.interface_config
+  hpc_interface_credentials:
     default:
       REPLACE: primary_hpc.definition.credentials
   mpi_load_command:
@@ -186,10 +186,10 @@ inputs:
           REPLACE: primary_cloud.definition.openstack_networks
 
   # Won't be rendered, their value is a match with other inputs
-  cloud_wm_config:
+  cloud_interface_config:
     default:
-      REPLACE: primary_cloud.definition.wm_config
-  cloud_wm_credentials:
+      REPLACE: primary_cloud.definition.interface_config
+  cloud_interface_credentials:
     default:
       REPLACE: openstack_image.credentials
   openstack_config:
@@ -252,10 +252,10 @@ inputs:
           REPLACE: secondary_cloud.definition.eosc_networks
 
   # Won't be rendered, their value is a match with other inputs
-  secondary_cloud_wm_config:
+  secondary_cloud_interface_config:
     default:
-      REPLACE: secondary_cloud.definition.wm_config
-  secondary_cloud_wm_credentials:
+      REPLACE: secondary_cloud.definition.interface_config
+  secondary_cloud_interface_credentials:
     default:
       REPLACE: eosc_image.credentials
   eosc_config:

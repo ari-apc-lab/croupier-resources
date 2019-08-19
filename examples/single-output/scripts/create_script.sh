@@ -23,12 +23,17 @@
 #          Atos Research & Innovation, Atos Spain S.A.
 #          e-mail: javier.carnero@atos.net
 #
-# singularity_bootstrap_example.sh
+# bootstrap_sbatch_example.sh
 
+FILE="touch.script"
 
-module load singularity/2.4.2
+cat >$FILE <<-EOM
+#!/bin/bash -l
 
-if [ ! -f $1/$2 ]; then
-    cd $1
-    singularity pull $3
-fi
+# DYNAMIC VARIABLES
+
+cd $CURRENT_WORKDIR
+
+eval touch $1\$1
+
+EOM

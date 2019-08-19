@@ -25,10 +25,10 @@
 
 ################### HPC Infrastructre ##################
 hpc_base_dir: $HOME
-hpc_wm_config:
+hpc_interface_config:
   country_tz: Europe/Madrid
-  workload_manager: SLURM
-hpc_wm_credentials:
+  infrastructure_interface: SLURM
+hpc_interface_credentials:
   host: <HOST>
   user: <USER>
   password: ""
@@ -47,9 +47,9 @@ singularity_mount_point: /mnt
 scratch_voulume_mount_point: /scratch
 
 ################# Cloud Infrastructre #################
-cloud_wm_config:
-  workload_manager: BASH
-cloud_wm_credentials:
+cloud_interface_config:
+  infrastructure_interface: BASH
+cloud_interface_credentials:
   host: ""
   password: ""
   private_key: ""
@@ -78,9 +78,9 @@ cloud_external_network: external
 
 ################# Second Cloud Infrastructre #################
 # Won't be rendered, their value is a match with other inputs
-secondary_cloud_wm_config:
-  workload_manager: BASH
-secondary_cloud_wm_credentials:
+secondary_cloud_interface_config:
+  infrastructure_interface: BASH
+secondary_cloud_interface_credentials:
   host: ""
   user: &id059 "<USER>"
   password: &id060 "<PASS>"

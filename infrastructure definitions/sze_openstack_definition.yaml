@@ -23,7 +23,7 @@
 #
 # sze_openstack_definition.yaml
 
-wm_config:
+interface_config:
 
 openstack_config:
   username:

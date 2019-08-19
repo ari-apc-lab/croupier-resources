@@ -1,0 +1,7 @@
+# sample config file for openfortivpn
+host = gateway.cesga.es
+port = 443
+username = USER@atos.net
+password = PASSWORD
+# trusted-cert = 06urg3754d2875f37t9t909985f4ba6bb8fd01a3d61e440bf89c22e6222106cc
+# ca-file = /usr/share/ca-certificates/mozilla/Deutsche_Telekom_Root_CA_2.crt

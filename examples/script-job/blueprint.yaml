@@ -33,35 +33,39 @@ imports:
     - inputs-def.yaml
 
 node_templates:
-    hpc_wm:
-        type: croupier.nodes.WorkloadManager
+    hpc_interface:
+        type: croupier.nodes.InfrastructureInterface
         properties:
-            config: { get_input: hpc_wm_config }
-            credentials: { get_input: hpc_wm_credentials }
+            config: { get_input: hpc_interface_config }
+            credentials: { get_input: hpc_interface_credentials }
             external_monitor_entrypoint: { get_input: monitor_entrypoint }
             job_prefix: { get_input: job_prefix }
             base_dir: { get_input: "hpc_base_dir" }
             monitor_period: 15
             skip_cleanup: true
-            workdir_prefix: "sbatch_scale"
+            workdir_prefix: "single_script"
 
     single_job:
         type: croupier.nodes.Job
         properties:
             job_options:
-                type: "SBATCH"
-                command: "touch.script single.test"
-                scale: 2
+                script: "touch.script"
+                arguments:
+                    - "single.test"
+                nodes: 1
+                tasks: 1
+                tasks_per_node: 1
+                max_time: "00:01:00"
+                partition: { get_input: partition_name }
             deployment:
-                bootstrap: "scripts/bootstrap_sbatch_scale_example.sh"
-                #revert: 'scripts/revert_sbatch_example.sh'
+                bootstrap: "scripts/create_script.sh"
+                revert: "scripts/delete_script.sh"
                 inputs:
                     - "single"
-                    - { get_input: partition_name }
             skip_cleanup: True
         relationships:
-            - type: job_managed_by_wm
-              target: hpc_wm
+            - type: job_managed_by_interface
+              target: hpc_interface
 
 outputs:
     single_job_name:

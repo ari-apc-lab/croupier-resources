@@ -34,32 +34,62 @@ imports:
   - inputs-def.yaml
 
 node_templates:
-  openstack_wm:
-    type: croupier.nodes.WorkloadManager
+  hpc_interface:
+    type: croupier.nodes.InfrastructureInterface
     properties:
-      config: { get_input: cloud_wm_config }
-      credentials: { get_input: cloud_wm_credentials }
+      config: { get_input: hpc_interface_config }
+      credentials: { get_input: hpc_interface_credentials }
       external_monitor_entrypoint: { get_input: monitor_entrypoint }
       job_prefix: { get_input: job_prefix }
-      workdir_prefix: "single_openstack"
+      workdir_prefix: "hpc_openstack"
+      skip_cleanup: true
+
+  openstack_interface:
+    type: croupier.nodes.InfrastructureInterface
+    properties:
+      config: { get_input: cloud_interface_config }
+      credentials: { get_input: cloud_interface_credentials }
+      external_monitor_entrypoint: { get_input: monitor_entrypoint }
+      job_prefix: { get_input: job_prefix }
+      workdir_prefix: "hybrid"
     relationships:
-      - type: wm_contained_in
+      - type: interface_contained_in
         target: my_server
+
+  hpc_job:
+    type: croupier.nodes.Job
+    properties:
+      job_options:
+        commands:
+          - "touch test_$1.output"
+        arguments:
+          - script
+        nodes: 1
+        tasks: 1
+        tasks_per_node: 1
+        max_time: "00:01:00"
+        partition: { get_input: partition_name }
+      skip_cleanup: True
+    relationships:
+      - type: job_managed_by_interface
+        target: hpc_interface
 
   vm_job:
     type: croupier.nodes.Job
     properties:
       job_options:
-        type: "SHELL"
-        command: "touch single_vm.test"
-      publish:
-        - dataset: { get_input: ckan_outputs_dataset }
-          file_path: "$CURRENT_WORKDIR/single_vm.test"
-          name: "single_vm"
-          description: "output test vm"
+        commands: ["touch single_vm.test"]
+        max_time: 00:01:00
+      # publish:
+      # - dataset: { get_input: ckan_outputs_dataset }
+      #   file_path: "$CURRENT_WORKDIR/single_vm.test"
+      #   name: "single_vm"
+      #   description: "output test vm"
     relationships:
-      - type: job_managed_by_wm
-        target: openstack_wm
+      - type: job_managed_by_interface
+        target: openstack_interface
+      - type: job_depends_on
+        target: hpc_job
 
   ########### OpenStack plugin ##########
   croupier-network:

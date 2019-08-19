@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -l
 
 ########
 # Copyright (c) 2019 Atos Spain SA. All rights reserved.
@@ -23,9 +23,17 @@
 #          Atos Research & Innovation, Atos Spain S.A.
 #          e-mail: javier.carnero@atos.net
 #
-# revert_example.sh
+# bootstrap_sbatch_example.sh
 
+FILE="touch.script"
 
-if [ -f deploy_$1.test ]; then
-    rm deploy_$1.test
-fi
+cat >$FILE <<-EOM
+#!/bin/bash -l
+
+# DYNAMIC VARIABLES
+
+cd $CURRENT_WORKDIR
+
+eval touch $1\$1
+
+EOM

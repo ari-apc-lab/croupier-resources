@@ -23,7 +23,7 @@
 #
 # cesga_eosc_definition.yaml
 
-wm_config:
+interface_config:
 
 eosc_config:
   id: im
