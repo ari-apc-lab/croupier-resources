@@ -3,7 +3,7 @@ services:
   manager:
     container_name: cfy_manager
     restart: always
-    image: cloudifyplatform/community-cloudify-manager-aio
+    build: .
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     security_opt:
@@ -17,7 +17,7 @@ services:
   vpn:
     container_name: vpn
     restart: always
-    build: .
+    build: openfortivpn/.
     devices:
       - /dev/ppp
     cap_add:
