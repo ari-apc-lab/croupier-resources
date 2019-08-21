@@ -6,9 +6,10 @@
 
 ## Contents
 
-- [Documentation](#blueprint-examples)
+- [Examples](#blueprint-examples)
 - [Infrastructure definitions](#infrastructure-definitions)
 - [Scripts](#scripts)
+- [Cloudify Manager Installation](#cloudify-manager-installation)
 - [License](#license)
 - [Legal disclaimer](#legal-disclaimer)
 
@@ -25,6 +26,33 @@ Croupier GUI support the definition of infrastructures, so users doesn't have to
 - `force-cancel.sh`: Helps in cancelling an execution that is stucked.
 - `stop-instance.sh`: Stops an execution.
 - `package-blueprint.sh`: Packages a blueprint folder as a zip file.
+
+## Cloudify manager installation
+
+Croupier, as cloudify plugin, needs a remote Cloudify Manager server to work on.
+
+### RPM
+
+> **_NOTE:_** Requires a Centos 7 remote machine with at least 2 CPUs and 4 Gb of RAM (4 CPUs
+and 12 Gb RAM recommended), reachable by the CLI, with requiretty disabled, and
+no password for sudo command.
+
+To install the orchestrator, just execute in the remote host:
+
+`./rpm_install.sh
+[HOST PRIVATE IP] [HOST PUBLIC IP] [Orchestrator NEW ADMIN PASSWORD]`
+
+### Docker
+
+In the _docker_ folder there is a _docker compose_ file to run the Cloudify
+Manager attached with a VPN tunnel using fortinet VPN.
+
+To use the VPN, place a VPN config file in the host machine and reference it in
+the `.env` file. If VPN is not needed, just comment that part on the _docker
+compose_ file.
+
+> **_WARNING:_** The docker image cannot be configured for now; Therefore admin
+> password is set to default and cannot be changed.
 
 ## License
 
