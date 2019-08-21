@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [[ $# < 3 ]]; then
   echo 'Usage: '$0' <PRIVATE_IP> <PUBLIC_IP> <ADMIN_PASSWD>'
   exit 1
